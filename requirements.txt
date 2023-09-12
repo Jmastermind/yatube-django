@@ -1,0 +1,6 @@
+django==4.2.5
+django-behaviors==0.5.1
+sorl-thumbnail==12.9.0
+pillow==10.0.0
+python-decouple==3.8
+mixer==7.2.2

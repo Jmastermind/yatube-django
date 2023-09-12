@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}
+  Профайл пользователя {{ author.username }}
+{% endblock title %}
+{% block content %}
+  <div class="row">
+    <aside class="col-12 col-md-3">
+      <ul class="list-group list-group-flush">
+        <li class="list-group-item">
+          <h4>{{ author.get_full_name }}</h4>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Всего постов: <span>{{ author.posts.count }}</span>
+        </li>
+        <li class="list-group-item d-flex justify-content-between align-items-center">
+          Подписчиков:  <span>{{ author.following.count }}</span>
+        </li>
+        {% if user.is_authenticated and author.username != request.user.username %}
+          {% if following %}
+            <a class="btn btn-md btn-light"
+               href="{% url 'posts:profile_unfollow' author.username %}"
+               role="button">
+              Отписаться
+            </a>
+          {% else %}
+            <a class="btn btn-md btn-primary btn-dark"
+               href="{% url 'posts:profile_follow' author.username %}"
+               role="button">
+              Подписаться
+            </a>
+          {% endif %}
+        {% endif %}
+      </ul>
+    </aside>
+    <article class="col-12 col-md-9">
+      <h4 class="mb-5">Все посты пользователя {{ author.get_full_name }}</h4>
+      {% for post in page_obj %}
+        {% include "posts/includes/post.html" with grouplink=True %}
+      {% endfor %}
+      {% include "includes/paginator.html" %}
+    </article>
+  </div>
+{% endblock content %}
